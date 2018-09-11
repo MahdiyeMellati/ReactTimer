@@ -9,8 +9,8 @@ var Navigation=()=>{
       <div className="top-bar-left">
         <ul className="menu">
           <li className="menu-text">My React Timer</li>
-          <li><IndexLink to="/" activeClassName="active" > <Timer/> </IndexLink></li>
-          <li><Link to="/CountDown" activeClassName="active" > <CountDown/> </Link></li>
+          <li><IndexLink to="/" activeClassName="active" > Timer </IndexLink></li>
+          <li><Link to="/CountDown" activeClassName="active" > CountDown </Link></li>
         </ul>
       </div>
 
