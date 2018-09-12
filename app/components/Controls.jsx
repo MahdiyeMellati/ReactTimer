@@ -12,6 +12,11 @@ var Controls=React.createClass({
       this.props.onStatusChange(newStatus);
     }
   },
+  componentWillReceiveProps: function(newProps)
+  {
+    console.log('component will recieve props '+ newProps.countDownStatus);
+  }
+  ,
   render: function()
   {
 
