@@ -1,6 +1,7 @@
 var React=require('react');
 var Clock= require('Clock');
 var TimeEntrance=require('TimeEntrance');
+var Controls=require('Controls');
 
 
 var CountDown=React.createClass({
@@ -8,17 +9,24 @@ getInitialState: function()
 {
   return{
     count : 0,
-    countdownStatus:'stopped'
+    countDownStatus:'stopped'
   };
 },
 componentDidUpdate: function(prevProps,prevState)
 {
-  if(this.state.countdownStatus!==prevState.countdownStatus)
+  if(this.state.countDownStatus!==prevState.countDownStatus)
   {
-    switch (this.state.countdownStatus) {
+    switch (this.state.countDownStatus) {
       case 'started':
       this.startTimer();
         break;
+        case 'stopped':
+        this.setState({count:0});
+        case 'paused':
+        clearInterval(this.timer)
+        this.timer=undefined;
+
+          break;
     }
   }
 },
@@ -30,25 +38,37 @@ startTimer: function()
     this.setState({
       count:newCount >=0 ? newCount:0
     });
-
-
   },1000);
 },
 handleSetTimeEntrance : function(seconds)
 {
   this.setState({
     count:seconds,
-    countdownStatus: 'started'
+    countDownStatus: 'started'
   });
+},
+handleStatusChange: function(newStatus)
+{
+  this.setState({countDownStatus:newStatus});
 },
   render: function()
   {
-    var {count}=this.state;
+    var {count,countDownStatus}=this.state;
+    var renderControlArea=()=>
+    {
+      if(countDownStatus!=='stopped')
+      {
+        return<Controls countDownStatus={countDownStatus} onStatusChange={this.handleStatusChange}/>
+      }
+      else {
+        return <TimeEntrance onSetTimeEntrance={this.handleSetTimeEntrance}/>
+      }
+    };
     return(
     <div>
 
       <Clock totalSeconds={count}/>
-      <TimeEntrance onSetTimeEntrance={this.handleSetTimeEntrance}/>
+      {renderControlArea()}
     </div>
   );
   }
